@@ -43,7 +43,7 @@ Ya utilizo IA como parte del flujo de trabajo de medición, no como reemplazo de
 ## Resultados destacados
 
 - Sistema de documentación digital operativo (Power Apps + SharePoint + Power Automate), reemplazando un flujo basado en Excel propenso a errores.
-- Más de 140 casos migrados y estandarizados hacia una base de datos centralizada.
+- Más de 200 casos migrados y estandarizados hacia una base de datos centralizada.
 - Matriz de indicadores de producto y resultado en desarrollo para una propuesta de expansión del proyecto, con línea base, meta y verificación definidas.
 - Propuesta técnica y financiera completa presentada a un nuevo cooperante internacional, con anexos de metodología como evidencia de capacidad instalada.
 - Estrategia de comunicación de resultados diferenciada por audiencia: financiador, prensa internacional, mecanismos de rendición de cuentas en derechos humanos.
