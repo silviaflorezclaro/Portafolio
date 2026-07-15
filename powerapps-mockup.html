@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>DEMO — App de Documentación de Casos (estilo Power Apps)</title>
+<style>
+  :root{
+    --ms-blue: #0078D4;
+    --ms-blue-dark: #106EBE;
+    --ms-navy: #201F1E;
+    --ms-bg: #F3F2F1;
+    --ms-card: #FFFFFF;
+    --ms-border: #E1DFDD;
+    --ms-teal: #038387;
+    --ms-text-secondary: #605E5C;
+    --ms-success: #107C10;
+    --ms-warning: #FFB900;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--ms-bg); color: var(--ms-navy);
+  }
+  .watermark{
+    background: repeating-linear-gradient(45deg, #fff3cd, #fff3cd 20px, #ffe69c 20px, #ffe69c 40px);
+    color:#7a5c00; font-size:12px; text-align:center; padding:6px;
+    letter-spacing:.5px; font-weight:600; border-bottom:1px solid #e0c060;
+  }
+  .app-shell{ max-width: 1100px; margin: 0 auto; }
+  .topbar{
+    background: var(--ms-blue); color:#fff; padding: 10px 18px;
+    display:flex; align-items:center; justify-content:space-between;
+    font-size: 14px;
+  }
+  .topbar .brand{ display:flex; align-items:center; gap:10px; font-weight:600; }
+  .brand .dot{ width:10px; height:10px; background:#fff; border-radius:2px; display:inline-block; }
+  .topbar .env{
+    background: rgba(255,255,255,.15); padding: 3px 10px; border-radius: 3px; font-size:12px;
+  }
+  .layout{ display:flex; min-height: 600px; background:#fff; }
+  .sidebar{
+    width: 230px; background: #FAFAFA; border-right: 1px solid var(--ms-border);
+    padding: 14px 0;
+  }
+  .sidebar .ficha-id{
+    padding: 0 16px 14px 16px; border-bottom: 1px solid var(--ms-border); margin-bottom: 8px;
+  }
+  .sidebar .ficha-id .label{ font-size:11px; color:var(--ms-text-secondary); text-transform:uppercase; letter-spacing:.5px;}
+  .sidebar .ficha-id .value{ font-size:18px; font-weight:700; color:var(--ms-blue);}
+  .section-item{
+    padding: 10px 16px; font-size:13px; display:flex; align-items:center; gap:10px;
+    color: var(--ms-text-secondary); cursor:default; border-left: 3px solid transparent;
+  }
+  .section-item .num{
+    width:22px; height:22px; border-radius:50%; background:#E1DFDD; color:#605E5C;
+    display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;
+  }
+  .section-item.done .num{ background: var(--ms-success); color:#fff; }
+  .section-item.active{ background:#EFF6FC; border-left-color: var(--ms-blue); color: var(--ms-navy); font-weight:600;}
+  .section-item.active .num{ background: var(--ms-blue); color:#fff; }
+
+  .main{ flex:1; padding: 24px 32px; }
+  .progress-wrap{ margin-bottom: 20px; }
+  .progress-label{ display:flex; justify-content:space-between; font-size:12px; color:var(--ms-text-secondary); margin-bottom:6px;}
+  .progress-bar{ height:6px; background:#E1DFDD; border-radius:4px; overflow:hidden; }
+  .progress-fill{ height:100%; width:42%; background: linear-gradient(90deg,var(--ms-blue),var(--ms-teal)); }
+
+  h1.screen-title{ font-size:20px; margin:0 0 2px 0; font-weight:600;}
+  .screen-sub{ font-size:13px; color:var(--ms-text-secondary); margin-bottom: 20px;}
+
+  .form-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
+  .field{ display:flex; flex-direction:column; gap:5px; }
+  .field.full{ grid-column: 1 / -1; }
+  .field label{ font-size:12px; font-weight:600; color:var(--ms-navy);}
+  .field .hint{ font-size:11px; color:var(--ms-text-secondary); font-weight:400; }
+  .field input, .field select, .field textarea{
+    border:1px solid var(--ms-border); border-radius:2px; padding:8px 10px; font-size:13px;
+    font-family:inherit; background:#fff; color:var(--ms-navy);
+  }
+  .field input:focus, .field textarea:focus{ outline:2px solid var(--ms-blue); outline-offset:-1px; border-color:var(--ms-blue);}
+  .field textarea{ resize:vertical; min-height:70px; }
+
+  .audio-row{ display:flex; align-items:center; gap:10px; margin-top:4px;}
+  .mic-btn{
+    display:flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--ms-border);
+    border-radius:16px; padding:6px 14px; font-size:12px; color: var(--ms-blue); font-weight:600; cursor:default;
+  }
+  .mic-dot{ width:8px; height:8px; border-radius:50%; background:#D13438; }
+  .audio-status{ font-size:11px; color:var(--ms-text-secondary); }
+
+  .footer-bar{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top: 28px; padding-top:18px; border-top:1px solid var(--ms-border);
+  }
+  .btn{
+    border:none; padding:9px 20px; border-radius:2px; font-size:13px; font-weight:600; cursor:default;
+  }
+  .btn-secondary{ background:#fff; border:1px solid var(--ms-border); color:var(--ms-navy); }
+  .btn-primary{ background: var(--ms-blue); color:#fff; }
+  .autosave{ font-size:11px; color: var(--ms-success); display:flex; align-items:center; gap:5px; }
+  .autosave .chk{ width:14px;height:14px; border-radius:50%; background:var(--ms-success); color:#fff; font-size:9px; display:flex; align-items:center; justify-content:center; }
+
+  .footnote{ max-width:1100px; margin: 16px auto 40px auto; font-size:12px; color:#7a5c00; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="watermark">⚠ DATOS FICTICIOS — Mockup de portafolio, ninguna información real de casos o personas</div>
+
+<div class="app-shell">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> MEAL_MiVida_2026 · App de Documentación (DEMO)</div>
+    <div class="env">Entorno de Portafolio · Sin conexión a datos reales</div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <div class="ficha-id">
+        <div class="label">Ficha en curso</div>
+        <div class="value">DEMO-2026-001</div>
+      </div>
+      <div class="section-item done"><span class="num">✓</span> S1 · Encabezado</div>
+      <div class="section-item done"><span class="num">✓</span> S2 · Datos víctima</div>
+      <div class="section-item active"><span class="num">3</span> S3 · Hechos y relato</div>
+      <div class="section-item"><span class="num">4</span> S4 · Contexto y actores</div>
+      <div class="section-item"><span class="num">5</span> S5 · Impactos</div>
+      <div class="section-item"><span class="num">6</span> S6 · Acceso a justicia</div>
+      <div class="section-item"><span class="num">7</span> S7 · Cierre</div>
+    </div>
+
+    <div class="main">
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Sección 3 de 7</span><span>42% completado</span></div>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+      </div>
+
+      <h1 class="screen-title">Hechos y relato</h1>
+      <div class="screen-sub">Todos los campos de esta pantalla se guardan automáticamente al avanzar. Los datos mostrados son de ejemplo.</div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label>Fecha de los hechos</label>
+          <input type="text" value="14/03/2024" readonly>
+        </div>
+        <div class="field">
+          <label>Hora <span class="hint">(si se conoce)</span></label>
+          <input type="text" value="Aprox. 8:00 p.m." readonly>
+        </div>
+        <div class="field">
+          <label>Departamento</label>
+          <input type="text" value="Chocó" readonly>
+        </div>
+        <div class="field">
+          <label>Municipio / Barrio</label>
+          <input type="text" value="Quibdó — Barrio Ficticio Norte" readonly>
+        </div>
+
+        <div class="field full">
+          <label>Relato general de los hechos</label>
+          <textarea readonly>[Ejemplo ilustrativo] La declarante narra las circunstancias generales en las que ocurrieron los hechos, el contexto previo y las personas presentes. Este campo se documenta preferentemente por audio.</textarea>
+          <div class="audio-row">
+            <div class="mic-btn"><span class="mic-dot"></span> Grabación asociada</div>
+            <span class="audio-status">audio_relato_demo.m4a · 04:12 · transcripción asistida disponible</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Tipo de homicidio</label>
+          <select><option>Individual</option><option>Colectiva</option></select>
+        </div>
+        <div class="field">
+          <label>¿Dirigido a población por condición específica?</label>
+          <select><option>No</option><option>Sí</option></select>
+        </div>
+      </div>
+
+      <div class="footer-bar">
+        <button class="btn btn-secondary">← Sección anterior</button>
+        <div class="autosave"><span class="chk">✓</span> Guardado automático activo</div>
+        <button class="btn btn-primary">Siguiente sección →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footnote">
+  Recreación ilustrativa de una pantalla de captura de datos construida en Microsoft Power Apps sobre SharePoint Online, con guardado incremental por sección y captura de audio embebida. Todos los valores son inventados con fines de portafolio.
+</div>
+
+</body>
+</html>

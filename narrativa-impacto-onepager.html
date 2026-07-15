@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>DEMO — De dato técnico a narrativa de impacto</title>
+<style>
+  :root{
+    --pbi-yellow:#F2C811; --pbi-dark:#252423; --pbi-bg:#F5F5F5; --pbi-border:#E1E1E1;
+    --text-secondary:#605E5C; --accent:#12239E; --ok:#107C10;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:'Segoe UI', Tahoma, Verdana, sans-serif; background: var(--pbi-bg); color:var(--pbi-dark);}
+  .watermark{
+    background: repeating-linear-gradient(45deg, #fff3cd, #fff3cd 20px, #ffe69c 20px, #ffe69c 40px);
+    color:#7a5c00; font-size:12px; text-align:center; padding:6px; font-weight:600; border-bottom:1px solid #e0c060;
+  }
+  .titlebar{ background:#fff; padding: 14px 24px; border-bottom: 3px solid var(--pbi-yellow);}
+  .titlebar h1{ font-size:18px; margin:0; font-weight:600;}
+  .titlebar .sub{ font-size:12px; color:var(--text-secondary); margin-top:2px;}
+
+  .shell{ max-width:1180px; margin:0 auto; padding: 20px 24px 40px 24px; }
+  .flow-row{ display:grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items:stretch; }
+  .arrow-col{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:var(--text-secondary); font-size:11px; text-align:center; width:110px;}
+  .arrow-col .arrow{ font-size:26px; color: var(--accent); }
+
+  .panel{ background:#fff; border:1px solid var(--pbi-border); border-radius:6px; padding:20px; }
+  .panel-label{ font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--text-secondary); font-weight:700; margin-bottom:14px;}
+
+  /* technical side */
+  table.tech{ width:100%; border-collapse:collapse; font-size:11.5px;}
+  table.tech th{ text-align:left; background:#FAFAFA; padding:7px 8px; border-bottom:2px solid var(--pbi-border); font-size:10px; text-transform:uppercase; color:var(--text-secondary);}
+  table.tech td{ padding:7px 8px; border-bottom:1px solid var(--pbi-border);}
+  .mono{ font-family: ui-monospace, Consolas, monospace; font-size:11px; color:#444;}
+
+  /* narrative side */
+  .one-pager{ font-family: Georgia, 'Iowan Old Style', serif; }
+  .one-pager h2{ font-size:17px; margin:0 0 4px 0; }
+  .one-pager .kicker{ font-size:10px; text-transform:uppercase; letter-spacing:.6px; color: var(--accent); font-weight:700; font-family:'Segoe UI',sans-serif;}
+  .one-pager .stat-big{ font-size:34px; font-weight:700; color:var(--accent); margin: 10px 0 2px 0; font-family:'Segoe UI',sans-serif;}
+  .one-pager .stat-label{ font-size:12px; color:var(--text-secondary); margin-bottom:14px; font-family:'Segoe UI',sans-serif;}
+  .one-pager p{ font-size:13px; line-height:1.6; color:#333; margin:0 0 10px 0;}
+  .one-pager .quote{ border-left:3px solid var(--pbi-yellow); padding-left:12px; font-style:italic; color:#555; font-size:12.5px; margin: 12px 0;}
+  .one-pager .caveat{ font-family:'Segoe UI',sans-serif; font-size:10.5px; color: var(--text-secondary); background:#FAFAFA; border-radius:4px; padding:8px 10px; margin-top:12px;}
+
+  .criteria-box{
+    grid-column: 1 / -1; background:#fff; border:1px solid var(--pbi-border); border-radius:6px;
+    padding:16px 20px; margin-top:20px; font-size:12px;
+  }
+  .criteria-box h3{ font-size:12px; margin:0 0 10px 0; text-transform:uppercase; letter-spacing:.4px; color:var(--text-secondary);}
+  .criteria-row{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:14px; }
+  .criteria-col .tag{ font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; display:inline-block; margin-bottom:6px;}
+  .tag.report{ background:#DFF6DD; color:var(--ok);}
+  .tag.separate{ background:#FFF4CE; color:#986F0B;}
+  .tag.out{ background:#FDE7E9; color:#A80000;}
+  .criteria-col ul{ margin:0; padding-left:16px; font-size:11.5px; color:#444; }
+
+  .footnote{ font-size:12px; color:#7a5c00; text-align:center; margin-top:20px; }
+</style>
+</head>
+<body>
+
+<div class="watermark">⚠ DATOS FICTICIOS — Cifras y programa inventados, únicamente para ilustrar el proceso de traducción</div>
+
+<div class="titlebar">
+  <h1>De dato técnico a narrativa de impacto (DEMO)</h1>
+  <div class="sub">Mismo resultado, dos audiencias: el equipo técnico y el financiador</div>
+</div>
+
+<div class="shell">
+  <div class="flow-row">
+    <div class="panel">
+      <div class="panel-label">Salida técnica — para el equipo interno</div>
+      <table class="tech">
+        <thead><tr><th>Indicador</th><th>Línea base</th><th>Meta</th><th>Actual</th><th>n</th></tr></thead>
+        <tbody>
+          <tr><td>% participantes con mejora en comprensión de derechos</td><td>22%</td><td>60%</td><td>54%</td><td class="mono">n=48</td></tr>
+          <tr><td>Δ termómetro emocional pre/post círculo (escala 1–5)</td><td>2.6</td><td>—</td><td>+0.9</td><td class="mono">n=48</td></tr>
+          <tr><td>% casos con ficha completa y verificada</td><td>0%</td><td>90%</td><td>82%</td><td class="mono">n=37</td></tr>
+          <tr><td>Tiempo promedio de documentación por caso</td><td>—</td><td>≤5h</td><td>4.3h</td><td class="mono">n=37</td></tr>
+        </tbody>
+      </table>
+      <div class="mono" style="margin-top:10px; font-size:10.5px; color:#888;">fuente: SharePoint · Lista_Doc_S1–S7 · procesado con Python/pandas</div>
+    </div>
+
+    <div class="arrow-col">
+      <div class="arrow">→</div>
+      <div>traducción con criterio propio<br>+ IA para acelerar el borrador</div>
+    </div>
+
+    <div class="panel one-pager">
+      <div class="kicker">Resultados del trimestre · Programa Demo</div>
+      <h2>Las familias llegan sabiendo menos de sus derechos de lo que se van sabiendo</h2>
+      <div class="stat-big">54%</div>
+      <div class="stat-label">de las participantes mejoró su comprensión de sus derechos, frente a un 22% antes de iniciar (meta: 60%)</div>
+      <p>Además del avance en conocimiento, el acompañamiento mostró una mejora sostenida en el estado emocional reportado por las propias participantes al cierre de cada sesión.</p>
+      <div class="quote">"Antes no sabía que podía pedir información sobre mi caso. Ahora sé a quién preguntarle." — participante, círculo 2 (cita ilustrativa, demo)</div>
+      <p>El equipo documentó 37 casos con estándar de calidad verificado, con un tiempo promedio de 4.3 horas por caso — por debajo de la meta interna de 5 horas.</p>
+      <div class="caveat">Nota metodológica (demo): la muestra es de 48 participantes en un solo trimestre; el dato de comprensión de derechos se autorreporta y no se ha triangulado aún con una fuente externa.</div>
+    </div>
+  </div>
+
+  <div class="criteria-box">
+    <h3>Criterio de qué se reporta, qué se separa y qué queda fuera (ejemplo ilustrativo)</h3>
+    <div class="criteria-row">
+      <div class="criteria-col">
+        <span class="tag report">Se reporta</span>
+        <ul>
+          <li>Indicadores con meta definida y dato verificado</li>
+          <li>Comparaciones línea base → actual, con n visible</li>
+          <li>Una cita o caso ilustrativo por informe, siempre anonimizado</li>
+        </ul>
+      </div>
+      <div class="criteria-col">
+        <span class="tag separate">Se reporta aparte</span>
+        <ul>
+          <li>Datos autorreportados sin triangulación (se marcan como preliminares)</li>
+          <li>Resultados de un solo país cuando el resto aún no tiene datos comparables</li>
+          <li>Aprendizajes cualitativos que no son aún "resultado" sino observación</li>
+        </ul>
+      </div>
+      <div class="criteria-col">
+        <span class="tag out">Queda fuera</span>
+        <ul>
+          <li>Cifras con n menor al mínimo metodológico definido</li>
+          <li>Información que podría identificar a una persona o poner en riesgo su seguridad</li>
+          <li>Proyecciones sin dato real que las respalde todavía</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    Este ejemplo ilustra el tipo de criterio explícito y documentado que aplico al decidir qué convertir en narrativa de impacto, qué presentar con matices y qué no reportar aún. Todas las cifras, citas y nombres de programa son ficticios.
+  </div>
+</div>
+
+</body>
+</html>

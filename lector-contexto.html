@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>DEMO — Lector de Contexto</title>
+<style>
+  :root{
+    --ink:#14181C;
+    --panel:#1D2228;
+    --paper:#F7F3EC;
+    --paper-dim:#EDE7DA;
+    --alert:#C97A3D;
+    --verified:#3E6E67;
+    --text-dim:#8A8578;
+    --text-light:#EDEAE3;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background: var(--ink); color: var(--text-light);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  .watermark{
+    background: repeating-linear-gradient(45deg, #3a2f14, #3a2f14 20px, #4a3a18 20px, #4a3a18 40px);
+    color:#F2C879; font-size:12px; text-align:center; padding:6px; font-weight:600;
+  }
+  .masthead{
+    border-bottom: 1px solid #2C333B; padding: 16px 24px; display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .masthead h1{
+    font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif; font-size: 22px; margin:0; font-weight:700;
+    letter-spacing:.2px;
+  }
+  .masthead .tag{ font-size:11px; color: var(--text-dim); font-family: ui-monospace, 'SF Mono', Consolas, monospace; }
+  .ticker{
+    background: var(--panel); border-bottom:1px solid #2C333B; padding:6px 24px; font-size:11px;
+    color: var(--text-dim); font-family: ui-monospace, Consolas, monospace; letter-spacing:.3px;
+    white-space:nowrap; overflow:hidden;
+  }
+
+  .layout{ display:grid; grid-template-columns: 1.2fr 1fr 0.9fr; gap:1px; background:#2C333B; }
+  .col{ background: var(--ink); padding: 18px 18px 30px 18px; min-height:520px; }
+  .col-title{
+    font-size:11px; text-transform:uppercase; letter-spacing:.6px; color: var(--text-dim);
+    font-family: ui-monospace, Consolas, monospace; margin-bottom: 14px; display:flex; justify-content:space-between;
+  }
+
+  /* Source feed cards */
+  .source-card{
+    background: var(--paper); color:#242019; border-radius:3px; padding: 12px 14px; margin-bottom: 10px;
+    border-left: 3px solid transparent; cursor:default;
+  }
+  .source-card.selected{ border-left-color: var(--alert); }
+  .source-card .src-meta{
+    font-size:10px; color:#6B6455; font-family: ui-monospace, Consolas, monospace; display:flex; justify-content:space-between; margin-bottom:5px;
+  }
+  .source-card .src-headline{
+    font-family: Georgia, 'Iowan Old Style', serif; font-size:13.5px; line-height:1.35; font-weight:600; margin-bottom:5px;
+  }
+  .source-card .src-snippet{ font-size:11.5px; color:#4A4536; line-height:1.4; }
+  .pill{ font-size:9px; padding:1px 7px; border-radius:8px; font-weight:700; text-transform:uppercase; letter-spacing:.3px; }
+  .pill.news{ background:#DCE7E5; color: var(--verified); }
+  .pill.social{ background:#F1DCC9; color: var(--alert); }
+
+  /* extraction panel */
+  .field-extract{ margin-bottom:16px; }
+  .field-extract .fx-label{ font-size:10px; text-transform:uppercase; letter-spacing:.5px; color: var(--text-dim); margin-bottom:5px; font-family: ui-monospace, Consolas, monospace;}
+  .fx-value{ font-size:13px; color: var(--text-light); }
+  .tag-chip{
+    display:inline-block; background: var(--panel); border:1px solid #33393F; color: var(--text-light);
+    font-size:11px; padding:4px 10px; border-radius:12px; margin:2px 4px 2px 0;
+  }
+  .tag-chip.alert{ border-color: var(--alert); color:#F0B98A; }
+  .tag-chip.verified{ border-color: var(--verified); color:#8FC2BA; }
+  .confidence{ font-size:11px; color: var(--text-dim); margin-top:4px; }
+  .divider{ height:1px; background:#2C333B; margin: 16px 0; }
+
+  /* map */
+  .zone-map{ display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; margin-top: 4px; }
+  .zone-cell{
+    aspect-ratio: 1; border-radius:4px; background: var(--panel); border:1px solid #2C333B;
+    display:flex; align-items:center; justify-content:center; font-size:10px; color: var(--text-dim);
+    font-family: ui-monospace, Consolas, monospace; position:relative;
+  }
+  .zone-cell.hot1{ background: #4A2A1C; border-color: var(--alert); color:#F0B98A; font-weight:700;}
+  .zone-cell.hot2{ background: #3A2418; border-color:#8A4F26; color:#E3A16A;}
+  .zone-legend{ display:flex; gap:14px; margin-top:14px; font-size:10px; color: var(--text-dim); }
+  .zone-legend .sw{ width:9px; height:9px; border-radius:2px; display:inline-block; margin-right:5px; vertical-align:middle;}
+
+  .footnote{ font-size:11px; color:#5C6068; text-align:center; padding: 16px 24px 30px 24px; }
+</style>
+</head>
+<body>
+
+<div class="watermark">⚠ DATOS FICTICIOS — Fuentes, publicaciones y patrones inventados. No representa personas, medios ni hechos reales.</div>
+
+<div class="masthead">
+  <h1>Lector de Contexto</h1>
+  <div class="tag">herramienta propia · lectura de fuentes abiertas para documentación en DDHH</div>
+</div>
+<div class="ticker">
+  MEDIO FICTICIO A · reporte de hechos zona norte (demo) &nbsp;&nbsp;•&nbsp;&nbsp; RED SOCIAL — publicación pública citada de forma anonimizada (demo) &nbsp;&nbsp;•&nbsp;&nbsp; MEDIO FICTICIO B · seguimiento territorial (demo) &nbsp;&nbsp;•&nbsp;&nbsp; 3 fuentes nuevas procesadas hoy (demo)
+</div>
+
+<div class="layout">
+  <div class="col">
+    <div class="col-title"><span>Fuentes ingeridas</span><span>12 hoy (demo)</span></div>
+
+    <div class="source-card selected">
+      <div class="src-meta"><span class="pill news">Prensa</span><span>Medio Ficticio A · hace 3h</span></div>
+      <div class="src-headline">Reportan hechos de violencia armada en zona norte de la ciudad (demo)</div>
+      <div class="src-snippet">Nota ilustrativa que menciona presencia de grupos armados y restricciones a la movilidad en un sector de la ciudad...</div>
+    </div>
+
+    <div class="source-card">
+      <div class="src-meta"><span class="pill social">Red social</span><span>Publicación pública · hace 6h</span></div>
+      <div class="src-headline">Publicación comunitaria sobre cierre de una vía (demo)</div>
+      <div class="src-snippet">Contenido público citado de forma anonimizada, sin datos que identifiquen a la persona autora...</div>
+    </div>
+
+    <div class="source-card">
+      <div class="src-meta"><span class="pill news">Prensa</span><span>Medio Ficticio B · ayer</span></div>
+      <div class="src-headline">Autoridades locales anuncian mesa de seguridad territorial (demo)</div>
+      <div class="src-snippet">Nota institucional sobre reuniones de coordinación interinstitucional en el territorio...</div>
+    </div>
+
+    <div class="source-card">
+      <div class="src-meta"><span class="pill social">Red social</span><span>Publicación pública · hace 2 días</span></div>
+      <div class="src-headline">Alerta comunitaria sobre movilidad restringida (demo)</div>
+      <div class="src-snippet">Mención pública de una "frontera invisible" percibida por habitantes de un sector (demo)...</div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="col-title"><span>Extracción de patrones</span><span>ítem seleccionado</span></div>
+
+    <div class="field-extract">
+      <div class="fx-label">Zona mencionada</div>
+      <div class="fx-value">Zona Norte Demo · Sector Ficticio 3</div>
+    </div>
+    <div class="field-extract">
+      <div class="fx-label">Tipo de evento</div>
+      <div><span class="tag-chip alert">Violencia armada</span><span class="tag-chip">Restricción de movilidad</span></div>
+    </div>
+    <div class="field-extract">
+      <div class="fx-label">Actor mencionado</div>
+      <div><span class="tag-chip">Grupo armado no identificado (demo)</span></div>
+    </div>
+    <div class="field-extract">
+      <div class="fx-label">Fecha estimada del hecho</div>
+      <div class="fx-value">12 de julio, 2026 (demo)</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field-extract">
+      <div class="fx-label">Coincidencia con casos documentados</div>
+      <div><span class="tag-chip verified">3 fichas en zona coincidente</span></div>
+      <div class="confidence">Nivel de coincidencia territorial: alto (demo)</div>
+    </div>
+    <div class="field-extract">
+      <div class="fx-label">Estado de verificación</div>
+      <div><span class="tag-chip">Pendiente de corroboración con fuente secundaria</span></div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="col-title"><span>Mapa de concentraciones</span><span>zonas (demo)</span></div>
+    <div class="zone-map">
+      <div class="zone-cell hot1">N1<br>7</div>
+      <div class="zone-cell hot2">N2<br>4</div>
+      <div class="zone-cell">N3<br>1</div>
+      <div class="zone-cell">N4<br>0</div>
+      <div class="zone-cell hot2">C1<br>3</div>
+      <div class="zone-cell">C2<br>2</div>
+      <div class="zone-cell">C3<br>1</div>
+      <div class="zone-cell">C4<br>0</div>
+      <div class="zone-cell">S1<br>2</div>
+      <div class="zone-cell">S2<br>1</div>
+      <div class="zone-cell">S3<br>0</div>
+      <div class="zone-cell">S4<br>1</div>
+    </div>
+    <div class="zone-legend">
+      <span><span class="sw" style="background:var(--alert)"></span>Alta concentración</span>
+      <span><span class="sw" style="background:#8A4F26"></span>Media</span>
+      <span><span class="sw" style="background:var(--panel)"></span>Baja / sin datos</span>
+    </div>
+  </div>
+</div>
+
+<div class="footnote">
+  Recreación ilustrativa de una herramienta propia para la lectura sistemática de fuentes abiertas (prensa y redes sociales públicas), orientada a identificar patrones territoriales que se cruzan con casos ya documentados. Todas las fuentes, publicaciones, zonas y cifras son ficticias; la herramienta real solo procesa información pública y no identifica personas.
+</div>
+
+</body>
+</html>

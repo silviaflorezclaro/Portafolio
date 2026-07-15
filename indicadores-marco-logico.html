@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>DEMO — Indicadores y Marco Lógico (estilo Power BI)</title>
+<style>
+  :root{
+    --pbi-yellow:#F2C811; --pbi-dark:#252423; --pbi-bg:#F5F5F5; --pbi-card:#FFFFFF; --pbi-border:#E1E1E1;
+    --pbi-c1:#118DFF; --pbi-c2:#12239E; --pbi-c3:#E66C37; --text-secondary:#605E5C;
+    --ok:#107C10; --mid:#986F0B; --low:#D83B01;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:'Segoe UI', Tahoma, Verdana, sans-serif; background: var(--pbi-bg); color:var(--pbi-dark);}
+  .watermark{
+    background: repeating-linear-gradient(45deg, #fff3cd, #fff3cd 20px, #ffe69c 20px, #ffe69c 40px);
+    color:#7a5c00; font-size:12px; text-align:center; padding:6px; font-weight:600; border-bottom:1px solid #e0c060;
+  }
+  .shell{ max-width: 1180px; margin: 0 auto; padding-bottom: 40px;}
+  .titlebar{ display:flex; align-items:center; justify-content:space-between; background:#fff; padding: 14px 24px; border-bottom: 3px solid var(--pbi-yellow);}
+  .titlebar h1{ font-size:18px; margin:0; font-weight:600;}
+  .titlebar .sub{ font-size:12px; color:var(--text-secondary); margin-top:2px;}
+
+  .section-title{ font-size:13px; font-weight:700; margin: 22px 24px 10px 24px; text-transform:uppercase; letter-spacing:.4px; color:var(--text-secondary);}
+
+  table.logframe{ width: calc(100% - 48px); margin: 0 24px; border-collapse: collapse; background:#fff; border:1px solid var(--pbi-border); font-size:12px;}
+  table.logframe th{ background:#FAFAFA; text-align:left; padding:10px 12px; border-bottom:2px solid var(--pbi-border); font-size:11px; text-transform:uppercase; letter-spacing:.3px; color:var(--text-secondary);}
+  table.logframe td{ padding:10px 12px; border-bottom:1px solid var(--pbi-border); vertical-align:top;}
+  table.logframe tr:last-child td{ border-bottom:none;}
+  .result-tag{ font-size:10px; font-weight:700; color:#12239E; background:#EAF1FF; padding:2px 8px; border-radius:10px; display:inline-block; margin-bottom:4px;}
+  .progress-mini{ background:#F3F2F1; border-radius:3px; height:8px; width:110px; overflow:hidden; display:inline-block; vertical-align:middle; margin-right:6px;}
+  .progress-mini-fill{ height:100%; border-radius:3px;}
+  .badge{ font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px;}
+  .badge.ok{ background:#DFF6DD; color:var(--ok);}
+  .badge.mid{ background:#FFF4CE; color:var(--mid);}
+  .badge.low{ background:#FDE7E9; color:var(--low);}
+
+  .kpi-row{ display:grid; grid-template-columns: repeat(4,1fr); gap:16px; padding: 10px 24px 0 24px;}
+  .kpi-card{ background:#fff; border:1px solid var(--pbi-border); border-radius:4px; padding:14px 16px;}
+  .kpi-card .kpi-label{ font-size:10px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.4px;}
+  .kpi-card .kpi-value{ font-size:24px; font-weight:700; margin-top:4px;}
+  .kpi-card .kpi-sub{ font-size:10px; color:var(--text-secondary); margin-top:2px;}
+
+  .footnote{ font-size:12px; color:#7a5c00; text-align:center; margin-top:20px; padding: 0 24px;}
+</style>
+</head>
+<body>
+
+<div class="watermark">⚠ DATOS FICTICIOS — Mockup de portafolio, cifras y metas inventadas</div>
+
+<div class="shell">
+  <div class="titlebar">
+    <div>
+      <h1>Indicadores del Proyecto — Marco Lógico (DEMO)</h1>
+      <div class="sub">Alimentado automáticamente desde la ficha de documentación (7 secciones · clave NumFicha)</div>
+    </div>
+  </div>
+
+  <div class="section-title">Indicadores de producto</div>
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Casos documentados</div>
+      <div class="kpi-value">37 / 50</div>
+      <div class="kpi-sub">74% de la meta · avance ficticio</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Círculos de estudio realizados</div>
+      <div class="kpi-value">6 / 8</div>
+      <div class="kpi-sub">75% de la meta</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Fichas con calidad verificada</div>
+      <div class="kpi-value">92%</div>
+      <div class="kpi-sub">sobre casos documentados</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Madres y cuidadoras acompañadas</div>
+      <div class="kpi-value">41 / 50</div>
+      <div class="kpi-sub">82% de la meta</div>
+    </div>
+  </div>
+
+  <div class="section-title">Matriz de indicadores de resultado (marco lógico)</div>
+  <table class="logframe">
+    <thead>
+      <tr><th style="width:26%">Resultado</th><th style="width:28%">Indicador</th><th>Línea base</th><th>Meta</th><th>Actual</th><th>Avance</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="result-tag">Resultado 1</span><br>Capacidades técnicas de documentación fortalecidas</td>
+        <td>% de fichas que cumplen estándar técnico y de confidencialidad</td>
+        <td>0%</td>
+        <td>90%</td>
+        <td>82%</td>
+        <td><div class="progress-mini"><div class="progress-mini-fill" style="width:82%; background:#118DFF;"></div></div><span class="badge mid">En curso</span></td>
+      </tr>
+      <tr>
+        <td><span class="result-tag">Resultado 2</span><br>Disponibilidad de información verificable</td>
+        <td>Nº de casos con ficha completa e integrada al Observatorio</td>
+        <td>143</td>
+        <td>200</td>
+        <td>180</td>
+        <td><div class="progress-mini"><div class="progress-mini-fill" style="width:65%; background:#12239E;"></div></div><span class="badge ok">En meta</span></td>
+      </tr>
+      <tr>
+        <td><span class="result-tag">Resultado 3</span><br>Insumos técnicos entregados a instancias judiciales/internacionales</td>
+        <td>Nº de informes o insumos entregados a autoridades y mecanismos</td>
+        <td>1</td>
+        <td>3</td>
+        <td>1</td>
+        <td><div class="progress-mini"><div class="progress-mini-fill" style="width:33%; background:#E66C37;"></div></div><span class="badge low">Rezagado</span></td>
+      </tr>
+      <tr>
+        <td><span class="result-tag">Resultado 4</span><br>Familias con información organizada para procesos judiciales</td>
+        <td>% de madres/cuidadoras que reportan mayor claridad sobre su proceso</td>
+        <td>20%</td>
+        <td>70%</td>
+        <td>58%</td>
+        <td><div class="progress-mini"><div class="progress-mini-fill" style="width:74%; background:#6B007B;"></div></div><span class="badge mid">En curso</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footnote">
+    Recreación ilustrativa de una matriz de indicadores que conecta el marco lógico de un proyecto (resultados, línea base, meta, avance) con datos capturados directamente en el sistema de documentación. Todas las cifras son inventadas con fines de portafolio.
+  </div>
+</div>
+
+</body>
+</html>

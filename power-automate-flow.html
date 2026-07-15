@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>DEMO — Flujo de Automatización (estilo Power Automate)</title>
+<style>
+  :root{
+    --pa-blue:#0066FF;
+    --pa-blue-light:#EAF1FF;
+    --pa-bg:#FAF9F8;
+    --pa-border:#D2D0CE;
+    --text-secondary:#605E5C;
+    --pa-green:#107C10;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:'Segoe UI', Tahoma, Verdana, sans-serif; background: var(--pa-bg); color:#201F1E;}
+  .watermark{
+    background: repeating-linear-gradient(45deg, #fff3cd, #fff3cd 20px, #ffe69c 20px, #ffe69c 40px);
+    color:#7a5c00; font-size:12px; text-align:center; padding:6px; font-weight:600;
+    border-bottom:1px solid #e0c060;
+  }
+  .shell{ max-width: 620px; margin: 0 auto; padding: 28px 20px 50px 20px; }
+  .header{ margin-bottom: 22px; }
+  .header h1{ font-size:18px; margin:0 0 4px 0; }
+  .header .sub{ font-size:12px; color: var(--text-secondary); }
+
+  .flow{ display:flex; flex-direction:column; align-items:center; }
+  .node{
+    width: 100%; background:#fff; border:1px solid var(--pa-border); border-radius:6px;
+    padding: 14px 16px; box-shadow: 0 1px 2px rgba(0,0,0,.05); position:relative;
+  }
+  .node .kind{ font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--pa-blue); font-weight:700; display:flex; align-items:center; gap:6px;}
+  .node .icon{ width:20px; height:20px; border-radius:4px; background:var(--pa-blue-light); color:var(--pa-blue); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;}
+  .node .title{ font-size:13px; font-weight:600; margin-top:6px;}
+  .node .detail{ font-size:11px; color:var(--text-secondary); margin-top:4px; }
+
+  .connector{ width:2px; height:26px; background: var(--pa-border); position:relative; }
+  .connector::after{
+    content:''; position:absolute; bottom:-1px; left:50%; transform:translateX(-50%);
+    border-left:5px solid transparent; border-right:5px solid transparent; border-top:6px solid var(--pa-border);
+  }
+  .plus{
+    width:20px; height:20px; border-radius:50%; background:#fff; border:1px solid var(--pa-border);
+    display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--text-secondary);
+    margin: 2px 0;
+  }
+
+  .branch-wrap{ display:flex; gap:18px; width:100%; }
+  .branch{ flex:1; display:flex; flex-direction:column; align-items:center; }
+  .branch-label{
+    font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; margin-bottom:8px;
+    padding:2px 10px; border-radius:10px;
+  }
+  .branch-label.yes{ background:#DFF6DD; color:var(--pa-green); }
+  .branch-label.no{ background:#FDE7E9; color:#A80000; }
+
+  .trigger .icon{ background:#E1F5EA; color:#107C10; }
+  .condition .icon{ background:#FFF4CE; color:#986F0B; }
+
+  .footnote{ font-size:12px; color:#7a5c00; text-align:center; margin-top:24px; }
+</style>
+</head>
+<body>
+
+<div class="watermark">⚠ DATOS FICTICIOS — Mockup de portafolio, flujo ilustrativo</div>
+
+<div class="shell">
+  <div class="header">
+    <h1>Flujo: Cierre de ficha y notificación (DEMO)</h1>
+    <div class="sub">Recreación ilustrativa de un flujo construido en Power Automate</div>
+  </div>
+
+  <div class="flow">
+    <div class="node trigger">
+      <div class="kind"><span class="icon">▶</span> Desencadenador automático</div>
+      <div class="title">Cuando se crea un elemento en Lista_Doc_S7</div>
+      <div class="detail">Sitio: Proyectosenejecucin · Lista: Lista_Doc_S7 (Cierre)</div>
+    </div>
+    <div class="connector"></div>
+
+    <div class="node condition">
+      <div class="kind"><span class="icon">◆</span> Condición</div>
+      <div class="title">¿EstadoFicha es igual a "Completa"?</div>
+      <div class="detail">Evalúa el campo consolidado de las 7 secciones de la ficha</div>
+    </div>
+    <div class="connector"></div>
+
+    <div class="branch-wrap">
+      <div class="branch">
+        <div class="branch-label yes">Si es sí</div>
+        <div class="node">
+          <div class="kind"><span class="icon" style="background:#EAF1FF;color:#0066FF;">≡</span> Acción</div>
+          <div class="title">Generar PDF de la ficha</div>
+          <div class="detail">Plantilla Word + datos de 7 listas → PDF en biblioteca</div>
+        </div>
+        <div class="connector"></div>
+        <div class="node">
+          <div class="kind"><span class="icon" style="background:#EAF1FF;color:#0066FF;">✉</span> Acción</div>
+          <div class="title">Enviar correo a coordinación</div>
+          <div class="detail">Asunto: "Nueva ficha completada — DEMO-2026-001"</div>
+        </div>
+      </div>
+
+      <div class="branch">
+        <div class="branch-label no">Si es no</div>
+        <div class="node">
+          <div class="kind"><span class="icon" style="background:#FDE7E9;color:#A80000;">⏱</span> Acción</div>
+          <div class="title">Marcar para seguimiento</div>
+          <div class="detail">Se incluye en el flujo diario de "Alerta ficha incompleta"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    Recreación ilustrativa de un flujo de Power Automate para el cierre automático de fichas de documentación, con generación de PDF y notificación a coordinación. Nombres de sitios, listas y datos son ficticios.
+  </div>
+</div>
+
+</body>
+</html>
